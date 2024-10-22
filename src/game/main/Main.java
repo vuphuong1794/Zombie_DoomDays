@@ -7,7 +7,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class Main extends JFrame {
-    // Ham main
+    // Hàm main
     public Main() {
         init();
     }
