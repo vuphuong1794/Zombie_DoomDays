@@ -33,6 +33,19 @@ public class PanelGame extends JComponent {
     private List<Enemy> enemies;
     private List<Bullet> bullets;
 
+    // Mouse position
+    private Point mousePosition;
+
+    public PanelGame() {
+        // Tạo trình để lắng nghe chuyển động, theo giỏ vị trí chuột
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(java.awt.event.MouseEvent e) {
+                mousePosition = e.getPoint();
+            }
+        });
+    }
+
     // Khởi động game
     public void start() {
         width = getWidth(); // Lấy chiều rộng của panel
@@ -49,6 +62,27 @@ public class PanelGame extends JComponent {
             while (start) {
                 long startTime = System.nanoTime();
                 drawBackground();
+
+                // Tính góc quay Player - chuột
+                if (mousePosition != null) {
+                    double dx = mousePosition.x - player.getX();
+                    double dy = mousePosition.y - player.getY();
+                    
+                    // Tính toán góc của Player và chuột
+                    double angleToMouse = Math.toDegrees(Math.atan2(dy, dx));
+                    
+                    // Góc quay được 360 độ
+                    if (angleToMouse < 0) {
+                        angleToMouse += 360;
+                    }
+                    // Tăng độ nhạy của chuột
+                    float sensitiveAngle = (float)(angleToMouse * 1.5);
+                    
+                    // Cập nhật góc xoay của Player
+                    player.changeAngle((float) angleToMouse);
+                }
+                
+
                 drawGame();
                 render();
                 long time = System.nanoTime() - startTime;
